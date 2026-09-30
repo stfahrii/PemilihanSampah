@@ -49,14 +49,21 @@ export default function AdminPetugasPage() {
     reloadData();
   }, []);
 
+  const [submitting, setSubmitting] = useState(false);
+
   async function handleEditSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!editItem) return;
 
+    setSubmitting(true);
     let fotoPath: string | undefined;
     if (editPhoto) {
       const uploaded = await uploadFotoPetugas(editPhoto);
-      if (!uploaded) { showToast("error", "Gagal upload foto. Coba lagi."); return; }
+      if (!uploaded) {
+        showToast("error", "Gagal upload foto. Coba lagi.");
+        setSubmitting(false);
+        return;
+      }
       fotoPath = uploaded;
     }
 
@@ -69,6 +76,8 @@ export default function AdminPetugasPage() {
       editItem.status || "Aktif",
       fotoPath
     );
+
+    setSubmitting(false);
 
     if (res.success) {
       showToast("success", res.message);
@@ -207,7 +216,16 @@ export default function AdminPetugasPage() {
 
               <div className="flex gap-2 pt-3">
                 <button type="button" onClick={() => { setEditItem(null); setEditPhoto(null); setEditPhotoPreview(null); }} className="btn-secondary flex-1">Batal</button>
-                <button type="submit" className="btn-eco flex-1">Simpan Perubahan</button>
+                <button type="submit" disabled={submitting} className="btn-eco flex-1 flex items-center justify-center gap-2">
+                  {submitting ? (
+                    <>
+                      <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Menyimpan...
+                    </>
+                  ) : (
+                    "Simpan Perubahan"
+                  )}
+                </button>
               </div>
             </form>
           </div>

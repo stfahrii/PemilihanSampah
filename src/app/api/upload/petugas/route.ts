@@ -20,17 +20,24 @@ export async function POST(req: NextRequest) {
 
     const ext = file.name.split(".").pop() || "jpg";
     const uniqueName = `petugas-${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-
-    const uploadDir = path.join(process.cwd(), "public", "images", "petugas");
-    await mkdir(uploadDir, { recursive: true });
-
     const buffer = Buffer.from(await file.arrayBuffer());
-    await writeFile(path.join(uploadDir, uniqueName), buffer);
+
+    let pathFile = `/images/petugas/${uniqueName}`;
+
+    try {
+      const uploadDir = path.join(process.cwd(), "public", "images", "petugas");
+      await mkdir(uploadDir, { recursive: true });
+      await writeFile(path.join(uploadDir, uniqueName), buffer);
+    } catch {
+      // Fallback to Data URL for serverless environment (Vercel)
+      const mimeType = file.type || "image/jpeg";
+      pathFile = `data:${mimeType};base64,${buffer.toString("base64")}`;
+    }
 
     return NextResponse.json({
       success: true,
       namaFile: uniqueName,
-      pathFile: `/images/petugas/${uniqueName}`,
+      pathFile,
     });
   } catch {
     return NextResponse.json({ error: "Upload gagal." }, { status: 500 });

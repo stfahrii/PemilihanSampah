@@ -9,19 +9,26 @@ export async function POST(req: NextRequest) {
 
     if (!file) return NextResponse.json({ error: "No file" }, { status: 400 });
 
-    const ext = file.name.split(".").pop();
+    const ext = file.name.split(".").pop() || "jpg";
     const uniqueName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadDir, { recursive: true });
-
     const buffer = Buffer.from(await file.arrayBuffer());
-    await writeFile(path.join(uploadDir, uniqueName), buffer);
+
+    let pathFile = `/uploads/${uniqueName}`;
+
+    try {
+      const uploadDir = path.join(process.cwd(), "public", "uploads");
+      await mkdir(uploadDir, { recursive: true });
+      await writeFile(path.join(uploadDir, uniqueName), buffer);
+    } catch {
+      // Fallback to Data URL for serverless environment (Vercel)
+      const mimeType = file.type || "image/jpeg";
+      pathFile = `data:${mimeType};base64,${buffer.toString("base64")}`;
+    }
 
     return NextResponse.json({
       success: true,
       namaFile: uniqueName,
-      pathFile: `/uploads/${uniqueName}`,
+      pathFile,
     });
   } catch (e) {
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
