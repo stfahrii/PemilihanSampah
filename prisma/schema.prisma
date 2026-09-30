@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id              String            @id @default(uuid())
+  nama            String
+  email           String            @unique
+  noHp            String            @unique
+  nik             String            @unique
+  password        String
+  alamat          String
+  rt              String?
+  rw              String?
+  role            String            @default("User")
+  fotoProfil      String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  jenisBangunanId String
+  wilayahId       String
+  saldoKoin       Int               @default(0)
+  pemilahan       PemilahanSampah[]
+  penukaranKoin   PenukaranKoin[]
+  jenisBangunan   JenisBangunan     @relation(fields: [jenisBangunanId], references: [id])
+  wilayah         Wilayah           @relation(fields: [wilayahId], references: [id])
+
+  @@unique([email, noHp])
+}
+
+model JenisBangunan {
+  id                String @id @default(uuid())
+  namaJenisBangunan String @unique
+  users             User[]
+}
+
+model Wilayah {
+  id                 String               @id @default(uuid())
+  namaWilayah        String               @unique
+  kelurahan          String
+  kecamatan          String
+  jadwalPengangkutan JadwalPengangkutan[]
+  pemilahan          PemilahanSampah[]
+  users              User[]
+}
+
+model JenisSampah {
+  id        String            @id @default(uuid())
+  namaJenis String            @unique
+  deskripsi String?
+  detail    DetailPemilahan[]
+  pemilahan PemilahanSampah[]
+}
+
+model FotoSampah {
+  id            String          @id @default(uuid())
+  namaFile      String
+  pathFile      String
+  tanggalUpload DateTime        @default(now())
+  laporanId     String          @unique
+  laporan       PemilahanSampah @relation(fields: [laporanId], references: [id], onDelete: Cascade)
+}
+
+model PemilahanSampah {
+  id             String              @id @default(uuid())
+  tanggalLapor   DateTime            @default(now())
+  status         String              @default("Menunggu")
+  userId         String
+  petugasId      String?
+  jenisSampahId  String?
+  wilayahId      String?
+  jamPenjemputan String?             @default("08:00 - 11:00 (Sesi Pagi)")
+  detail         DetailPemilahan[]
+  foto           FotoSampah?
+  jadwal         JadwalPengangkutan?
+  jenisSampah    JenisSampah?        @relation(fields: [jenisSampahId], references: [id], onDelete: Restrict)
+  petugas        Petugas?            @relation(fields: [petugasId], references: [id])
+  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wilayah        Wilayah?            @relation(fields: [wilayahId], references: [id], onDelete: Restrict)
+}
+
+model DetailPemilahan {
+  id            String          @id @default(uuid())
+  berat         Decimal         @db.Decimal(10, 2)
+  keterangan    String?
+  laporanId     String
+  jenisSampahId String
+  jenisSampah   JenisSampah     @relation(fields: [jenisSampahId], references: [id])
+  laporan       PemilahanSampah @relation(fields: [laporanId], references: [id], onDelete: Cascade)
+
+  @@unique([laporanId, jenisSampahId])
+}
+
+model Petugas {
+  id          String               @id @default(uuid())
+  namaPetugas String
+  email       String               @unique
+  noHp        String               @unique
+  jabatan     String
+  status      String               @default("Aktif")
+  fotoProfil  String?
+  jadwal      JadwalPengangkutan[]
+  pemilahan   PemilahanSampah[]
+}
+
+model JadwalPengangkutan {
+  id                 String          @id @default(uuid())
+  tanggalAngkut      DateTime        @db.Date
+  jamAngkut          DateTime        @db.Time(6)
+  statusPengangkutan String          @default("Terjadwal")
+  laporanId          String          @unique
+  petugasId          String
+  wilayahId          String
+  laporan            PemilahanSampah @relation(fields: [laporanId], references: [id], onDelete: Cascade)
+  petugas            Petugas         @relation(fields: [petugasId], references: [id])
+  wilayah            Wilayah         @relation(fields: [wilayahId], references: [id])
+}
+
+model VoucherReward {
+  id          String          @id @default(uuid())
+  namaVoucher String          @unique
+  deskripsi   String?
+  hargaKoin   Int
+  stok        Int             @default(100)
+  kategori    String
+  penukaran   PenukaranKoin[]
+}
+
+model PenukaranKoin {
+  id           String        @id @default(uuid())
+  tanggalTukar DateTime      @default(now())
+  jumlahKoin   Int
+  kodeVoucher  String        @unique
+  status       String        @default("Berhasil")
+  userId       String
+  voucherId    String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  voucher      VoucherReward @relation(fields: [voucherId], references: [id], onDelete: Restrict)
+}
+
