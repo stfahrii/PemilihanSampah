@@ -71,19 +71,25 @@ export default function ForgotPasswordPage() {
           <div style={{ textAlign: "center", marginBottom: 28 }}>
             <div
               style={{
-                width: 60,
-                height: 60,
+                width: 64,
+                height: 64,
                 borderRadius: 18,
-                background: "linear-gradient(135deg, #4ade80, #16a34a)",
+                background: "rgba(255,255,255,0.15)",
+                border: "1px solid rgba(255,255,255,0.2)",
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: 30,
                 marginBottom: 14,
-                boxShadow: "0 8px 24px rgba(22,163,74,0.4)",
+                boxShadow: "0 8px 24px rgba(22,163,74,0.3)",
+                padding: 6,
+                overflow: "hidden",
               }}
             >
-              🔑
+              <img
+                src="/logo.png"
+                alt="EcoSort Senayan Logo"
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}
+              />
             </div>
             <div style={{ color: "#fff", fontWeight: 900, fontSize: 22 }}>Lupa Password</div>
             <div style={{ color: "rgba(255,255,255,0.55)", fontSize: 13, marginTop: 4 }}>

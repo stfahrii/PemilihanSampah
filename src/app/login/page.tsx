@@ -51,9 +51,12 @@ export default function LoginPage() {
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-16 dark-panel relative z-10">
         <div>
           <div className="flex items-center gap-3 mb-16">
-            <div className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl shadow-lg"
-              style={{ background: "linear-gradient(135deg, #16a34a, #10b981)" }}>
-              ♻️
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center p-1 bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg overflow-hidden">
+              <img
+                src="/logo.png"
+                alt="EcoSort Senayan Logo"
+                className="w-full h-full object-contain"
+              />
             </div>
             <div>
               <div className="font-black text-xl text-white leading-none">EcoSort</div>
@@ -103,9 +106,14 @@ export default function LoginPage() {
           {/* Form Card */}
           <div className="bg-white rounded-2xl p-8 border border-slate-200 card-lift shadow-xl">
 
-            <Link href="/" className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-emerald-600 transition-colors mb-4">
-              ← Kembali ke Beranda
-            </Link>
+            <div className="flex items-center justify-between mb-4">
+              <Link href="/" className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-emerald-600 transition-colors">
+                ← Kembali ke Beranda
+              </Link>
+              <div className="flex lg:hidden items-center gap-2">
+                <img src="/logo.png" alt="EcoSort Senayan Logo" className="w-8 h-8 object-contain" />
+              </div>
+            </div>
 
             <div className="badge-amber mb-3">AUTENTIKASI</div>
             <h1 className="text-2xl font-black text-slate-900 mb-1">Masuk Akun</h1>

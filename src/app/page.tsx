@@ -704,16 +704,19 @@ export default function HomePage() {
 
       {/* ── 1. NAVBAR WITH DEMO BUTTONS ──────── */}
       <nav className="relative z-30 flex items-center justify-between px-8 py-5 max-w-7xl mx-auto w-full border-b border-slate-200/80 bg-white/70 backdrop-blur-md sticky top-0">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md"
-            style={{ background: "linear-gradient(135deg, #16a34a, #10b981)" }}>
-            <Icon name="recycle" size={22} color="#ffffff" />
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="w-11 h-11 rounded-xl flex items-center justify-center p-1 bg-white border border-slate-100 shadow-sm group-hover:scale-105 transition-transform overflow-hidden">
+            <img
+              src="/logo.png"
+              alt="EcoSort Senayan Logo"
+              className="w-full h-full object-contain"
+            />
           </div>
           <div>
             <div className="font-black text-xl tracking-tight text-slate-900 leading-none">EcoSort</div>
             <div className="font-mono-custom text-xs text-emerald-600 font-bold uppercase tracking-widest mt-0.5">Senayan</div>
           </div>
-        </div>
+        </Link>
 
         {/* Center Nav */}
         <div className="hidden md:flex items-center gap-8">
@@ -1011,9 +1014,13 @@ export default function HomePage() {
       </section>
 
       {/* ── 6. FOOTER ─────────────────────────────────────────── */}
-      <footer className="relative z-10 text-center py-8 text-slate-400 font-mono-custom text-xs border-t border-slate-200 bg-white">
+      <footer className="relative z-10 text-center py-8 text-slate-400 font-mono-custom text-xs border-t border-slate-200 bg-white flex flex-col items-center justify-center gap-2">
+        <div className="flex items-center gap-2">
+          <img src="/logo.png" alt="EcoSort Senayan Logo" className="w-6 h-6 object-contain" />
+          <span className="font-bold text-slate-700">EcoSort Senayan</span>
+        </div>
         <div>© 2026 EcoSort Senayan · Sistem Informasi Pemilahan Sampah (10 Kategori Sampah Terdata)</div>
-        <div className="text-emerald-600 font-bold mt-1">System Online & Ready</div>
+        <div className="text-emerald-600 font-bold mt-0.5">System Online & Ready</div>
       </footer>
 
       {/* Tutorial & Comment Modal */}

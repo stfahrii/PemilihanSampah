@@ -63,9 +63,12 @@ export default function RegisterPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-md"
-              style={{ background: "linear-gradient(135deg, #16a34a, #10b981)" }}>
-              ♻️
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center p-1 bg-white border border-slate-200 shadow-md overflow-hidden">
+              <img
+                src="/logo.png"
+                alt="EcoSort Senayan Logo"
+                className="w-full h-full object-contain"
+              />
             </div>
             <span className="font-black text-2xl text-slate-900 tracking-tight">EcoSort Senayan</span>
           </div>

@@ -51,10 +51,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <aside className={`sidebar ${collapsed ? "collapsed" : ""} print:hidden`}>
         {/* Logo */}
         <div className="sidebar-logo">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{ background: "linear-gradient(135deg, #4ade80, #16a34a)", color: "#ffffff" }}>
-              <Icon name="recycle" size={20} color="#ffffff" strokeWidth={2.2} />
+          <Link href="/admin/dashboard" className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-white p-1 overflow-hidden shadow-sm">
+              <img
+                src="/logo.png"
+                alt="EcoSort Senayan Logo"
+                className="w-full h-full object-contain"
+              />
             </div>
             {!collapsed && (
               <div>
@@ -62,7 +65,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div className="text-green-400 text-xs mt-0.5">Admin Panel</div>
               </div>
             )}
-          </div>
+          </Link>
         </div>
 
         {/* Admin badge */}

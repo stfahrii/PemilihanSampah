@@ -129,11 +129,16 @@ export default function AdminLaporanPage() {
       )}
 
       {/* KOP SURAT RESMI KHUSUS PRINT */}
-      <div className="hidden print:block text-center border-b-2 border-slate-900 pb-4 mb-6">
-        <h2 className="text-xl font-bold uppercase text-slate-900 tracking-wide">Pemerintah Kota Administrasi Jakarta Selatan</h2>
-        <h3 className="text-base font-bold text-slate-800">Sistem Informasi Pemilahan Sampah EcoSort Senayan</h3>
-        <p className="text-xs text-slate-600 mt-1">Laporan Rekapitulasi Pemilahan Sampah — Kecamatan Senayan & Kebayoran Baru</p>
-        <p className="text-[11px] text-slate-500 italic mt-0.5">Dicetak pada: {new Date().toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })} WIB</p>
+      <div className="hidden print:block border-b-2 border-slate-900 pb-4 mb-6">
+        <div className="flex items-center justify-center gap-5">
+          <img src="/logo.png" alt="EcoSort Senayan Logo" className="w-14 h-14 object-contain" />
+          <div className="text-center">
+            <h2 className="text-xl font-bold uppercase text-slate-900 tracking-wide">Pemerintah Kota Administrasi Jakarta Selatan</h2>
+            <h3 className="text-base font-bold text-slate-800">Sistem Informasi Pemilahan Sampah EcoSort Senayan</h3>
+            <p className="text-xs text-slate-600 mt-1">Laporan Rekapitulasi Pemilahan Sampah — Kecamatan Senayan & Kebayoran Baru</p>
+            <p className="text-[11px] text-slate-500 italic mt-0.5">Dicetak pada: {new Date().toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })} WIB</p>
+          </div>
+        </div>
       </div>
 
       {/* Filter & Print PDF */}

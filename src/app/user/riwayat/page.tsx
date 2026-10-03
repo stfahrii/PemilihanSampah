@@ -112,7 +112,7 @@ export default function RiwayatPage() {
       {/* Print-only Header */}
       <div className="hidden print:block mb-6" style={{ borderBottom: "2px solid #16a34a", paddingBottom: 12 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <div style={{ fontSize: 36 }}>♻️</div>
+          <img src="/logo.png" alt="EcoSort Senayan Logo" style={{ width: 44, height: 44, objectFit: "contain" }} />
           <div>
             <div style={{ fontWeight: 900, fontSize: 18, color: "#0f172a" }}>EcoSort Senayan</div>
             <div style={{ fontSize: 12, color: "#475569" }}>Sistem Informasi Pemilahan Sampah — Pemerintah Kota Administrasi Jakarta Selatan</div>
