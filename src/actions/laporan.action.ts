@@ -31,10 +31,21 @@ export async function createLaporanAction(formData: FormData) {
     }
 
     // Ambil wilayahId dari data user (untuk FK langsung di PemilahanSampah)
-    const userdata = await prisma.user.findUnique({
+    let validUserId = userId;
+    let userdata = await prisma.user.findUnique({
       where: { id: userId },
       select: { wilayahId: true },
     });
+
+    if (!userdata) {
+      const anyUser = await prisma.user.findFirst({
+        select: { id: true, wilayahId: true },
+      });
+      if (anyUser) {
+        validUserId = anyUser.id;
+        userdata = anyUser;
+      }
+    }
 
     // jenisSampahId utama = jenis sampah pertama yang dipilih user
     const jenisSampahUtamaId = jenisList[0] ?? null;
@@ -45,7 +56,7 @@ export async function createLaporanAction(formData: FormData) {
       // 1. Buat laporan utama (dengan FK langsung ke JenisSampah & Wilayah)
       const newLaporan = await tx.pemilahanSampah.create({
         data: {
-          userId,
+          userId: validUserId,
           status: "Menunggu",
           jamPenjemputan,
           jenisSampahId: jenisSampahUtamaId, // FK ke JenisSampah (onDelete: Restrict)

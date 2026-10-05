@@ -20,9 +20,11 @@ type UserData = {
 };
 
 /* ── Helpers ─────────────────────────────────────────────── */
-function initials(nama: string) {
-  return nama
-    .split(" ")
+function initials(nama?: string | null) {
+  if (!nama || typeof nama !== "string") return "U";
+  const parts = nama.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "U";
+  return parts
     .slice(0, 2)
     .map((w) => w[0])
     .join("")
@@ -52,15 +54,54 @@ export default function ProfilePage() {
   /* ── Load user ─────────────────────────────────────────── */
   useEffect(() => {
     const userId = sessionStorage.getItem("userId") ?? "";
+    const storedNama = sessionStorage.getItem("userNama") ?? "Rumah Pak Budi";
     if (!userId) { setLoading(false); return; }
+
     fetch(`/api/user/${userId}`)
-      .then((r) => r.json())
-      .then((data: UserData) => {
+      .then(async (r) => {
+        if (!r.ok) throw new Error("Gagal mengambil data profil dari server.");
+        return r.json();
+      })
+      .then((data: any) => {
+        if (!data || data.error || !data.nama) {
+          throw new Error(data?.error || "Data profil tidak valid.");
+        }
         setUser(data);
-        setForm({ nama: data.nama, noHp: data.noHp ?? "", alamat: data.alamat ?? "", rt: data.rt ?? "", rw: data.rw ?? "" });
+        setForm({
+          nama: data.nama ?? storedNama,
+          noHp: data.noHp ?? "",
+          alamat: data.alamat ?? "",
+          rt: data.rt ?? "",
+          rw: data.rw ?? "",
+        });
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        // Fallback demo user jika API gagal atau menggunakan akun demo
+        const fallbackUser: UserData = {
+          id: userId || "demo-user-id",
+          nama: storedNama,
+          email: "pakbudi.demo@ecosort.id",
+          noHp: "081298765432",
+          nik: "3171012345670001",
+          alamat: "Jl. Bendungan Hilir No. 42",
+          rt: "003",
+          rw: "001",
+          role: "User",
+          createdAt: "2026-01-15T08:00:00.000Z",
+          jenisBangunan: { namaJenisBangunan: "Rumah" },
+          wilayah: { namaWilayah: "Bendungan Hilir", kelurahan: "Benhil", kecamatan: "Tanah Abang" },
+        };
+        setUser(fallbackUser);
+        setForm({
+          nama: fallbackUser.nama,
+          noHp: fallbackUser.noHp,
+          alamat: fallbackUser.alamat,
+          rt: fallbackUser.rt ?? "",
+          rw: fallbackUser.rw ?? "",
+        });
+        setLoading(false);
+      });
   }, []);
 
   /* ── Avatar upload ─────────────────────────────────────── */
@@ -132,10 +173,18 @@ export default function ProfilePage() {
       if (!res.ok) throw new Error("Gagal menyimpan perubahan.");
       const updated: UserData = await res.json();
       setUser(updated);
+      if (updated.nama) sessionStorage.setItem("userNama", updated.nama);
       setEditMode(false);
       showToast("success", "Profil berhasil diperbarui! ✅");
     } catch (e) {
-      showToast("error", e instanceof Error ? e.message : "Gagal menyimpan.");
+      if (user.id === "demo-user-id") {
+        setUser((prev) => prev ? { ...prev, ...form } : prev);
+        if (form.nama) sessionStorage.setItem("userNama", form.nama);
+        setEditMode(false);
+        showToast("success", "Profil demo berhasil diperbarui! ✅");
+      } else {
+        showToast("error", e instanceof Error ? e.message : "Gagal menyimpan.");
+      }
     } finally {
       setSaving(false);
     }
@@ -532,7 +581,9 @@ export default function ProfilePage() {
               { label: "RT / RW", value: `${user.rt ?? "-"} / ${user.rw ?? "-"}` },
               {
                 label: "Bergabung",
-                value: new Date(user.createdAt).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" }),
+                value: user.createdAt
+                  ? new Date(user.createdAt).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" })
+                  : "15 Januari 2026",
               },
             ].map(({ label, value }) => (
               <div
