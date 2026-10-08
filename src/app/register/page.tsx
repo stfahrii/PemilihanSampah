@@ -61,7 +61,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-2xl relative z-10">
 
         {/* Header – Navbar row */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="w-full flex items-center justify-between mb-6">
           {/* Kiri: Logo + Nama */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center p-1 bg-white border border-slate-200 shadow-md overflow-hidden">
