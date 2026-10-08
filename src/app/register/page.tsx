@@ -79,11 +79,8 @@ export default function RegisterPage() {
           </Link>
         </div>
 
-        {/* Sub-header – Badge + Judul (centered) */}
+        {/* Sub-header – Judul (centered) */}
         <div className="text-center mb-8">
-          <div className="flex justify-center mb-2">
-            <span className="badge-green">REGISTRASI BANGUNAN</span>
-          </div>
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">Pendaftaran Akun Baru</h1>
           <p className="text-slate-500 text-sm mt-1">Satu bangunan wajib memiliki 1 akun terdaftar di Kecamatan Senayan</p>
         </div>
