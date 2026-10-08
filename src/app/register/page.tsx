@@ -60,22 +60,30 @@ export default function RegisterPage() {
 
       <div className="w-full max-w-2xl relative z-10">
 
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center p-1 bg-white border border-slate-200 shadow-md overflow-hidden">
+        {/* Header – Navbar row */}
+        <div className="flex items-center justify-between mb-6">
+          {/* Kiri: Logo + Nama */}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center p-1 bg-white border border-slate-200 shadow-md overflow-hidden">
               <img
                 src="/logo.png"
                 alt="EcoSort Senayan Logo"
                 className="w-full h-full object-contain"
               />
             </div>
-            <span className="font-black text-2xl text-slate-900 tracking-tight">EcoSort Senayan</span>
+            <span className="font-black text-xl text-slate-900 tracking-tight">EcoSort Senayan</span>
           </div>
-          <Link href="/" className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-emerald-600 transition-colors mb-4">
+          {/* Kanan: Kembali ke Beranda */}
+          <Link href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-emerald-600 transition-colors">
             ← Kembali ke Beranda
           </Link>
-          <div className="badge-green mb-2">REGISTRASI BANGUNAN</div>
+        </div>
+
+        {/* Sub-header – Badge + Judul (centered) */}
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-2">
+            <span className="badge-green">REGISTRASI BANGUNAN</span>
+          </div>
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">Pendaftaran Akun Baru</h1>
           <p className="text-slate-500 text-sm mt-1">Satu bangunan wajib memiliki 1 akun terdaftar di Kecamatan Senayan</p>
         </div>
